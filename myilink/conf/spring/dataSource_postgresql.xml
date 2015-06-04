@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<!--数据源 postgresql -->
+	<bean id="dataSource_postgresql" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${postgresql.driverClass}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${postgresql.url}</value>
+		</property>
+		<property name="user">
+			<value>${postgresql.user}</value>
+		</property>
+		<property name="password">
+			<value>${postgresql.password}</value>
+		</property>
+		<!--连接池中保留的最小连接数。 -->
+		<property name="minPoolSize" value="10" />
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize" value="1000" />
+		<!--最大空闲时间,1800秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime" value="1800" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireIncrement" value="30" />
+		<!-- #每100ms尝试一次 -->
+		<property name="acquireRetryDelay" value="100" />
+		<property name="maxStatements" value="1000" />
+		<property name="initialPoolSize" value="10" />
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="60" />
+		<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts" value="30" />
+		<property name="breakAfterAcquireFailure" value="false" />
+		<property name="testConnectionOnCheckout" value="false" />
+	</bean>
+
+	<!-- sqlSessionFactory postgresql -->
+	<bean name="sqlSessionFactory_postgresql"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- dataSource -->
+		<property name="dataSource" ref="dataSource_postgresql" />
+		<!--总配置文件  -->
+		<property name="configLocation"
+			value="classpath:mybatis/mybatis_config.xml" />
+		<!-- mapper xml的位置 -->
+		<property name="mapperLocations" 
+		value="classpath*:mybatis/postgresql/*Mapper.xml"/>
+	</bean>
+
+	<!-- 扫描 com.ailink下所有的接口，根据对应的mapper.xml为其生成代理类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_postgresql" />
+		<property name="basePackage" value="com.ailink.business" />
+	</bean>
+	<!-- 事务管理器 -->
+	<bean name="transactionManager_postgresql"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_postgresql"></property>
+	</bean>
+
+	<tx:advice id="txAdvice_postgresql" transaction-manager="transactionManager_postgresql">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="pc_postgresql"
+			expression="execution(* com.ailink.business..service.*Service.*(..))" />
+		<aop:advisor pointcut-ref="pc_postgresql" advice-ref="txAdvice_postgresql" />
+	</aop:config>
+</beans>

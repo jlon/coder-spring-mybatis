@@ -1,0 +1,21 @@
+﻿<div class="h_btn_w">
+    <div class="b_w1 active">
+        <button class="analyze">统计分析</button>
+    </div>
+    <div class="b_w2">
+        <button class="manager">管理</button>
+    </div>
+</div>
+<script>
+$(function() {
+    $('.h_btn_w button').hover(function() {
+        $(this).parent().addClass('hover');
+    }, function() {
+        $(this).parent().removeClass('hover');
+    });
+
+    $('.manager').click(function () {
+        window.location.href = "account";
+    });
+});
+</script>

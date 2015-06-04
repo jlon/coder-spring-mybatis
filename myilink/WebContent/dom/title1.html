@@ -1,0 +1,307 @@
+<div class="title"></div>
+<div class="date_option_wrap">
+    <div class="date_option">
+        <em></em>
+    </div>
+    <div class="datepicker-wrap">
+        <div class='dp-calendar'>
+            <div class="dp-header-row date-header-left">
+                <button type='button' class='dp-l-btn'>&lt;</button>
+                <span class='dp-header'></span>
+            </div>
+            <table class='dp-body'></table>
+        </div>
+        <div class='dp-calendar'>
+            <div class="dp-header-row">
+                <span class='dp-header'></span>
+            </div>
+            <table class='dp-body'></table>
+        </div>
+        <div class='dp-calendar'>
+            <div class="dp-header-row date-header-right">
+                <button type='button' class='dp-r-btn'>&gt;</button>
+                <span class='dp-header'></span>
+            </div>
+            <table class='dp-body'></table>
+        </div>
+        <div class='dp-picker-wrap'>
+            <div class="date-show date-show-active" id='choInputWrap'>
+                <div>开始日期：</div>
+                <input type="text" readonly id='startDateInput'>
+                <div class="end_date">结束日期：</div>
+                <input type="text" readonly id='endDateInput'>
+            </div>
+            <div class="btn-wrap">
+                <button type='button' class='btn' id='dateApplyBtn'>应用</button>
+                <button type='button' class='btn' id='dateCancelBtn'>取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function DatePicker(run) {
+    _this = this;
+
+    this.clickTimes = 0;
+
+    this.date = new Date((new Date().getTime() - 24 * 3600 * 1000));
+
+    $('.dp-l-btn').click(function() {
+        _this.date.setMonth(_this.date.getMonth() - 1);
+        _this.updateDom();
+    });
+
+    $('.dp-r-btn').click(function() {
+        _this.date.setMonth(_this.date.getMonth() + 1);
+        _this.updateDom();
+    });
+
+    this.updateDom();
+
+    $('#dateAutoSelect').change(function() {
+        _this.clearCalendarSelect();
+
+        var startDate;
+        var endDate;
+
+        switch ($(this).val()) {
+            case '0':
+                _this.date = new Date();
+                _this.updateDom();
+                $('.dp-today').prev().addClass('dp-select-start dp-select');
+                break;
+            case '1':
+                _this.date = new Date();
+                _this.updateDom();
+
+                startDate = new Date(_this.date);
+                startDate.setDate(_this.date.getDate() - 6 - _this.date.getDay());
+
+                endDate = new Date(_this.date);
+                endDate.setDate(_this.date.getDate() - _this.date.getDay());
+
+                $('.datepicker-wrap td').each(function() {
+                    var date = new Date(parseInt($(this).attr('date')));
+
+                    if (date.getMonth() == startDate.getMonth() && date.getDate() == startDate.getDate()) {
+                        $(this).addClass('dp-select-start dp-select');
+
+                    } else if (date.getMonth() == endDate.getMonth() && date.getDate() == endDate.getDate()) {
+                        $(this).addClass('dp-select-end dp-select');
+
+                    } else if (date > startDate && date < endDate) {
+                        $(this).addClass('dp-select');
+                    }
+                });
+
+                _this.setStartDateValue(startDate);
+                _this.setEndDateValue(endDate);
+                break;
+            case '2':
+                _this.date = new Date();
+                _this.updateDom();
+                $('.dp-today').prev().addClass('dp-select-start dp-select');
+        }
+    });
+
+    this.clearCalendarSelect = function() {
+        $('.datepicker-wrap td').removeClass('dp-select');
+        $('.datepicker-wrap td').removeClass('dp-select-start');
+        $('.datepicker-wrap td').removeClass('dp-select-end');
+    };
+
+    $('#comSelected').click(function() {
+        _this.clearCalendarSelect();
+        _this.clickTimes = 0;
+
+        if ($(this).is(':checked')) {
+            $('#startComDateInput, #endComDateInput').removeAttr('disabled');
+            $('#choInputWrap').removeClass('date-show-active');
+            $('#comInputWrap').addClass('date-show-active');
+        } else {
+            $('#startComDateInput, #endComDateInput').attr('disabled', 'disabled');
+            $('#startComDateInput, #endComDateInput').val('');
+            $('#comInputWrap').removeClass('date-show-active');
+            $('#choInputWrap').addClass('date-show-active');
+        }
+    });
+
+    $('#dateApplyBtn').click(function() {
+        $('.datepicker-wrap').fadeOut();
+
+        if ($('#startDateInput').val() == '' || $('#endDateInput').val() == '') {
+            return;
+        }
+
+        if ($('#startDateInput').val() == $('#endDateInput').val()) {
+            $('.date_option em').text($('#startDateInput').val());
+
+        } else {
+            $('.date_option em').text($('#startDateInput').val() + '-' + $('#endDateInput').val());
+        }
+
+        sessionStorage.startDate = _this.startDate.getTime();
+        sessionStorage.endDate = _this.endDate.getTime();
+
+        if (typeof run != "undefined") {
+            run();
+        }
+    });
+
+    $('#dateCancelBtn').click(function() {
+        $('.datepicker-wrap').fadeOut('fast');
+    });
+
+    _this.updateDom();
+}
+
+DatePicker.prototype.getCalendarDate = function(index) {
+    var date = new Date(this.date);
+    date.setMonth(this.date.getMonth() - index);
+    return date;
+}
+
+DatePicker.prototype.getDaysOfMonth = function(date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+};
+
+DatePicker.prototype.getFirstDayOfMonth = function(date) {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+};
+
+DatePicker.prototype.getDateString = function(date) {
+    return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日';
+}
+
+DatePicker.prototype.setStartDateValue = function(date) {
+    this.startDate = date;
+
+    if ($('#comSelected').is(':checked')) {
+        $('#startComDateInput').val(_this.getDateString(date));
+
+    } else {
+        $('#startDateInput').val(_this.getDateString(date));
+    }
+}
+
+DatePicker.prototype.setEndDateValue = function(date) {
+    this.endDate = date;
+
+    if ($('#comSelected').is(':checked')) {
+        $('#endComDateInput').val(_this.getDateString(date));
+
+    } else {
+        $('#endDateInput').val(_this.getDateString(date));
+    }
+}
+
+DatePicker.prototype.updateDom = function() {
+    var _this = this,
+        today = new Date();
+
+    $('.dp-body').each(function(index) {
+        var dom = '<tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr>';
+
+        var calendarDate = _this.getCalendarDate(1 - index), //日期(年月)
+            sDay = _this.getFirstDayOfMonth(calendarDate), //当月第一天的星期
+            eDate = _this.getDaysOfMonth(calendarDate); //当月天数
+
+        var indexOfTds = 0,
+            day = 0;
+
+        for (var i = 0; i < 6; i++) {
+            dom += '<tr>';
+
+            for (var j = 0; j < 7; j++) {
+                indexOfTds++;
+
+                if (indexOfTds > eDate + sDay || indexOfTds <= sDay) {
+                    dom += '<td>&nbsp;</td>';
+
+                } else if (today.getFullYear() == calendarDate.getFullYear() && today.getMonth() == calendarDate.getMonth() && today.getDate() == day + 1) {
+                    var date = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), ++day).getTime();
+                    dom += '<td date="' + date + '" class="dp-today">' + day + '</td>';
+
+                } else {
+                    var date = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), ++day).getTime();
+                    dom += '<td date="' + date + '">' + day + '</td>';
+
+                };
+            }
+            dom += '</tr>';
+        }
+
+        $(this).html(dom);
+        $(this).prev().children('span').text(calendarDate.getFullYear() + '年' + (calendarDate.getMonth() + 1) + '月');
+    });
+
+    $('.datepicker-wrap td').each(function(index) {
+        if ($(this).text().trim() == '') {
+            return;
+        }
+
+        var date = new Date(parseInt($(this).attr('date'))),
+            today = new Date();
+
+        if (date > today) {
+            $(this).addClass('dp-after-today');
+
+        } else {
+            $(this).addClass('dp-before-today');
+        }
+    });
+
+    $('.datepicker-wrap td').click(function() {
+
+        if ($(this).text().trim() == '' || $(this).hasClass('dp-after-today')) {
+            return;
+        }
+        var date = new Date(parseInt($(this).attr('date')));
+
+        if (_this.clickTimes++ % 2 == 0) {
+            _this.clearCalendarSelect();
+            $(this).addClass('dp-select dp-select-start');
+            _this.setStartDateValue(date);
+        } else {
+            $(this).addClass('dp-select dp-select-end');
+            _this.setEndDateValue(date);
+        }
+
+        if ($('.dp-select').length == 2) {
+            var startChangeColor = false;
+            $('.datepicker-wrap td').each(function() {
+
+                if ($(this).text().trim() == '' || $(this).hasClass('dp-after-today')) {
+                    return;
+                }
+
+                var date = new Date(parseInt($(this).attr('date')));
+                var startDate = new Date(parseInt($('.dp-select-start').attr('date')));
+                var endDate = new Date(parseInt($('.dp-select-end').attr('date')));
+
+                if (date >= startDate && date <= endDate) {
+                    $(this).addClass('dp-select');
+
+                } else if (date >= endDate && date <= startDate) {
+                    $(this).addClass('dp-select');
+                    _this.setStartDateValue(endDate);
+                    _this.setEndDateValue(startDate);
+                }
+            });
+        }
+    });
+};
+
+$(function() {
+    var times = 0;
+    $('.date_option').click(function() {
+        if (times++ % 2 == 1) {
+            $('.datepicker-wrap').fadeOut('fast');
+        } else {
+            $('.datepicker-wrap').fadeIn('fast');
+        }
+    });
+
+    $('.date_option em').text(ailink.getDateString());
+});
+</script>

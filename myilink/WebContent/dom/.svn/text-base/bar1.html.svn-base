@@ -1,0 +1,79 @@
+﻿<ul>
+    <li class="li_c">
+        <span class="bar1">概览</span>
+        <div class="list">
+            <a href="overview">
+                <em>店铺概览</em>
+            </a>
+            <a href="realtime">
+                <em>实时统计</em>
+            </a>
+        </div>
+    </li>
+    <li class="li_c">
+        <span class="bar2">客流</span>
+        <div class="list">
+            <a href="getin">
+                <em>入店趋势</em>
+            </a>
+            <a href="passenger">
+                <em>客流趋势</em>
+            </a>
+        </div>
+    </li>
+    <li class="li_c">
+        <span class="bar3">顾客</span>
+        <div class="list">
+            <a href="clientType">
+                <em>新老顾客</em>
+            </a>
+            <a href="dwelltime">
+                <em>在店时长</em>
+            </a>
+            <a href="comeCycle">
+                <em>到访周期</em>
+            </a>
+            <a href="comeTimes">
+                <em>到访次数</em>
+            </a>
+            <a href="liveness">
+                <em>活跃度</em>
+            </a>
+            <a href="phoneType">
+                <em>手机品牌</em>
+            </a>
+        </div>
+    </li>
+    <li class="li_t">
+        <a href="hotmap" class="bar4">区域热度</a>
+    </li>
+</ul>
+<script>
+$(function() {
+    var keywords = window.location.href.match("\/[a-zA-Z]+$").toString().substr(1);
+
+    if (keywords == "hotmap") {
+        $('.li_t').addClass('active');
+
+    } else {
+        $('.li_c a').each(function() {
+            var href = $(this).attr('href');
+
+            if (href == keywords) {
+                $(this).addClass('active');
+                $(this).parents('.li_c').addClass('active');
+            }
+        });
+    }
+
+    $('.li_c').on('touchstart', function() {
+        var list = $(this).children('.list');
+
+        if (list.css('display') == 'block') {
+            list.hide();
+        } else {
+            list.show();
+        }
+    });
+});
+</script>

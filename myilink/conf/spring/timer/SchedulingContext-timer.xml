@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/task  
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<!-- 两种定时器配置，任选其一即可 -->
+
+	<!-- spring3.0之前的用法，配置比较繁琐 值班提醒定时器 这个是定时器要调用方法的类 <bean id="visitTimeTimer" 
+		class="com.ailink.business.visittime.timer.VisitTimeTimer"/> 定义调用对象和调用对象的方法 
+		<bean id="jobtaskista" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+		调用的类 <property name="targetObject"> <ref bean="visitTimeTimer" /> </property> 
+		调用类中的方法 <property name="targetMethod"> <value>handleVisitTime</value> </property> 
+		</bean> 复杂触发器 <bean id="remindCronTriggerista" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+		<property name="jobDetail"> <ref bean="jobtaskista" /> </property> <property 
+		name="cronExpression"> 每天23:59:59调用一次 <value>59 59 23 * * ?</value> </property> 
+		</bean> 调度工厂 <bean id="schedulerista" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+		<property name="triggers"> <ref bean="remindCronTriggerista" /> </property> 
+		</bean> -->
+
+
+	<!-- spring3.0之后的新用法，配置有变化，而且比以前简单了很多 -->
+	<!-- 定时器 这个是定时器要调用方法的类 “ 此处用spring的注解去管理了” -->
+	<bean id="visitTimeTimer" class="com.ailink.business.visittime.timer.VisitTimeTimer">
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<task:scheduled-tasks>
+		<!-- 调用的类visitTimeTimer 调用类中的方法handleVisitTime 这里表示的是每天23:59:59调用一次 -->
+		<task:scheduled ref="visitTimeTimer" method="handleVisitTime"
+			cron="0 0 1 * * ?" /><!--每天夜里一点 -->
+	</task:scheduled-tasks>
+
+
+
+
+
+
+
+</beans>

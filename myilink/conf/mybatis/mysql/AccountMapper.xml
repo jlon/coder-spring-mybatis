@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ailink.system.account.dao.AccountMapper">
+	
+	<resultMap id="AccountResultMap" type="Account">
+		<id property="id" column="ID" />
+		<result property="zjdlsj" column="ZJDLSJ" />
+		<result property="fwjssj" column="fwjssj" />
+		<result property="kfid" column="KFID" />
+		<result property="ktsj" column="KTSJ" />
+		<result property="sjdj" column="SJDJ" />
+		<result property="zt" column="ZT" />
+		<result property="tx" column="TX" />
+		<result property="szhy" column="szhy" />
+		<result property="ssqyid" column="ssqyid" />
+		<result property="sscsid" column="sscsid" />
+		<result property="sssfid" column="sssfid" />
+		<result property="address" column="address" />
+		<result property="mail" column="mail" />
+		<result property="lxdh" column="lxdh" />
+		<result property="lxr" column="lxr" />
+		<result property="gsmc" column="gsmc" />
+		<result property="userid" column="userid" />
+		<result property="fsjid" column="fsjid" />
+	</resultMap>
+	
+	<sql id="AccountColumns">
+	 ID,ZJDLSJ,FWJSSJ,KFID,KTSJ,SJDJ,ZT,TX,SZHY,
+	 SSQYID,SSCSID,SSSFID,ADDRESS,MAIL,LXDH,LXR,GSMC,USERID,FSJID
+    </sql>
+    
+    <sql id="insertColumns">
+	 ZJDLSJ,FWJSSJ,KFID,KTSJ,SJDJ,ZT,TX,SZHY,
+	 SSQYID,SSCSID,SSSFID,ADDRESS,MAIL,LXDH,LXR,GSMC,USERID,FSJID
+    </sql>
+	
+    <!-- 很据条件查询店铺的全部 -->
+	<select id="listPageAccount" resultMap="AccountResultMap" parameterType="Account">
+		select
+		<include refid="AccountColumns" />
+		from Account where 1=1 
+		<if test="gsmc !=null and gsmc!=''">
+			and gsmc like "%"#{gsmc}"%" 
+		</if>
+		<if test="ktsj !=null and ktsj !=''">
+			and ktsj =#{ktsj}
+		</if>
+		<if test="userid !=null and userid !='' or userid==0">
+			and userid =#{userid}
+		</if>
+		<if test="bs==3">
+			and fsjid is null
+		</if>
+		<if test="bs==4">
+			and fsjid is not null
+		</if>
+		<if test="fsjid !=null and fsjid!=''">
+			and fsjid =#{fsjid}
+		</if>
+	</select>
+	
+	<!-- 查询店铺的全部 -->
+	<select id="listAllAccount" resultMap="AccountResultMap">
+		select
+		<include refid="AccountColumns" />
+		from Account
+	</select>
+	
+	<!-- 根据Id查询店铺 -->
+	<select id="getAccountById" resultMap="AccountResultMap" parameterType="int">
+		select
+		<include refid="AccountColumns" />
+		from Account where id = #{id}
+	</select>
+	
+	<!-- 插入 -->
+	<insert id="insertAccount" parameterType="Account" 
+	useGeneratedKeys="true" keyProperty="id">
+	
+		insert Account (<include refid="insertColumns"/>) 
+		values 
+		(
+		#{zjdlsj},#{fwjssj},#{kfid},#{ktsj},
+		#{sjdj},#{zt},#{tx},#{szhy},#{ssqyid},
+		#{sscsid},#{sssfid},#{address},#{mail},
+		#{lxdh},#{lxr},#{gsmc},#{userid},#{fsjid}
+		)
+	</insert>
+	
+	<!--更新  -->
+	<update id="updateAccount" parameterType="Account">
+		update Account set 
+		
+		zjdlsj=#{zjdlsj},
+		fwjssj=#{fwjssj},
+		kfid=#{kfid},
+		ktsj=#{ktsj},
+		sjdj=#{sjdj},
+		zt=#{zt},
+		tx=#{tx},
+		szhy=#{szhy},
+		ssqyid=#{ssqyid},
+		sscsid=#{sscsid},
+		sssfid=#{sssfid},
+		address=#{address},
+		mail=#{mail},
+		lxdh=#{lxdh},
+		lxr=#{lxr},
+		gsmc=#{gsmc},
+		userid=#{userid},
+		fsjid =#{fsjid}
+		where id=#{id}
+	</update>
+	
+	<!--根据Account查询  -->
+	<select id="getAccountInfo" parameterType="Account" resultMap="AccountResultMap">
+		select 
+		<include refid="AccountColumns" />
+		from Account where 1=1
+		<if test="gsmc!=null">
+		and gsmc = #{gsmc}
+		</if>
+	</select>
+	
+	<!--删除  -->
+	<delete id="deleteAccount" parameterType="int">
+		delete from Account where id=#{id}
+	</delete>
+	
+	<!--获取数量  -->
+	<select id="getCount" parameterType="Account" resultType="int">
+		select count(id) from Account 
+	</select>
+	
+	
+	
+	<!--获取数量  -->
+	<select id="getAccountByName" parameterType="string" resultMap="AccountResultMap">
+		select
+		 <include refid="AccountColumns" />
+		 from Account 
+		 where gsmc = #{gsmc}
+	</select>
+	
+	<!-- 根据userId查询店铺 -->
+	<select id="getAccountByUserId" resultMap="AccountResultMap" parameterType="string">
+		select
+		<include refid="AccountColumns" />
+		from Account where userId = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,260 @@
+.heatmap {
+    margin: 10px auto;
+    box-shadow: 0 0 10px;
+}
+.heatmap img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.a-date-con {
+    display: none;
+}
+.city-option-wrap {
+    padding: 8px 10px;
+    background: #ffffff;
+}
+.store-option {
+    float: left;
+    color: #ffffff;
+    line-height: 50px;
+}
+.store-arrow {
+    float: left;
+    width: 50px;
+    height: 50px;
+    background: #7d869a;
+    text-align: center;
+    cursor: pointer;
+}
+.store-title {
+    overflow: hidden;
+    width: 130px;
+    border-top: 5px solid #54B23B;
+    text-indent: 10px;
+}
+.all-store-wrap {
+    border-top: 1px solid #d4d4d4;
+}
+.target-wrap {
+    overflow: hidden;
+    padding: 20px 0 10px;
+}
+.target-block {
+    float: left;
+    min-width: 180px;
+}
+.target-model img {
+    width: 610px;
+}
+.detail-target-btn {
+    float: right;
+    margin: 20px 20px 0 0;
+    background: #a5afc2;
+    color: #ffffff;
+}
+.target-title {
+    padding-left: 22px;
+    font-size: 14px;
+}
+.target-con {
+    padding-left: 20px;
+    border-left: 1px solid #ededed;
+}
+.target-con-first {
+    border-left: 5px solid #b8e986;
+}
+.target-number {
+    font-size: 18px;
+    font-weight: bold;
+}
+.target-supplement {
+    font-size: 12px;
+    color: #9b9b9b;
+}
+.target-detail span:nth-child(2) {
+    font-size: 12px;
+    color: #9b9b9b;
+}
+.store-rank {
+    float: left;
+    width: 190px;
+}
+.target-rank-detail {
+    margin-left: 190px;
+}
+.target-rank-wrap table {
+    width: 100%;
+}
+.target-rank-wrap th {
+    background: #f6f6f6;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #7d8699;
+    text-align: center;
+}
+.target-rank-wrap td {
+    height: 45px;
+    text-align: center;
+}
+.store-rank-line {
+    display: inline-block;
+    height: 25px;
+    border-left: 3px solid #31be9f;
+    vertical-align: middle;
+}
+.store-rank-number {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: #f3a14b;
+    color: #ffffff;
+    line-height: 25px;
+    text-align: center;
+    vertical-align: middle;
+}
+.store-rank-name {
+    font-size: 12px;
+}
+.date-type-row {
+    padding: 0 10px;
+    line-height: 50px;
+}
+.date-type-block {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+    font-size: 16px;
+}
+.up-number {
+    color: #f84f47;
+}
+.down-number {
+    color: #46a72d;
+}
+.target-block-spe {
+    width: 250px;
+    padding-right: 10px;
+}
+.target-diff {
+    float: right;
+}
+.target-diff th {
+    font-size: 12px;
+    color: #9b9b9b;
+    text-align: center;
+    font-weight: normal;
+}
+.target-diff td {
+    padding: 3px;
+}
+.target-diff-l {
+    background: #e0f6c9;
+    color: #63bb4b;
+}
+.target-diff-r {
+    background: #7ed321;
+    color: #ffffff;
+}
+.target-block span:nth-child(3) {
+    font-size: 12px;
+    color: #9b9b9b;
+}
+.main-body {
+    padding-top: 20px;
+}
+.customer-title {
+    float: left;
+    width: 210px;
+    border-left: 5px solid #b8e986;
+    line-height: 40px;
+    font-weight: bold;
+    text-indent: 20px;
+}
+#customerChart {
+    width: 200px;
+    float: left;
+}
+.custromer-detail {
+    float: right;
+    margin-right: 100px;
+}
+tr.cd-new {
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    line-height: 36px;
+}
+.custromer-detail th {
+    padding-bottom: 20px;
+    color: #7d8699;
+    text-align: right;
+}
+.custromer-detail td {
+    text-align: right;
+    color: #9b9b9b;
+}
+.custromer-detail td:nth-child(1) {
+    text-align: left;
+    text-indent: 30px;
+}
+.custromer-detail td.cd-dot {
+    text-indent: 16px;
+}
+.cd-num {
+    width: 60px;
+}
+.cd-rate {
+    width: 70px;
+}
+.cd-long {
+    width: 80px;
+}
+.cd-times {
+    width: 80px;
+}
+.new-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #e0f6c9;
+}
+.old-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #7ed321;
+}
+.customer-detail-title {
+    width: 130px;
+}
+.customer-detail-number {
+    text-align: right;
+}
+.custromer-detail .cd-bold {
+    color: #4a4a4a;
+    font-size: 18px;
+}
+.targt-wrap-spe .target-title {
+    padding-bottom: 10px;
+    font-size: 12px;
+    color: #9b9b9b;
+}
+.come-chart {
+    float: left;
+    width: 200px;
+    text-align: center;
+}
+.customer-title-spe {
+    width: 110px;
+}
+.device-middle {
+    width: 80px;
+    padding-right: 20px;
+}
+.main_c{
+    position: relative;
+}

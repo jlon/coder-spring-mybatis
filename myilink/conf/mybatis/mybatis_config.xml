@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<typeAliases>
+		<typeAlias type="com.ailink.system.user.entity.User" alias="User" />
+		<typeAlias type="com.ailink.system.account.entity.Account" alias="Account" />
+	</typeAliases>
+	
+	<!--分页插件 -->
+	<plugins>
+		<plugin interceptor="com.ailink.framework.mybatis.PagePlugin">
+			<property name="dialect" value="mysql" />
+			<property name="pageSqlId" value=".*listPage.*" />
+		</plugin>
+	</plugins>
+	
+	<!-- <mappers>
+	   <mapper resource="mybatis/mysql/AccountMapper.xml"/>
+	   <mapper resource="mybatis/mysql/UserMapper.xml"/>
+	</mappers> -->
+</configuration>

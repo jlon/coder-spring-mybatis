@@ -1,0 +1,36 @@
+﻿<div class="title"></div>
+<div class="lv_btn_w">
+    <button type="button" class="title_btn active" id="lastMonth">最近30天</button>
+    <button type="button" class="title_btn" id="monthCheck">
+        <span>月份查询</span>
+        <div class="lv_mon_op">
+            <a href="javascript:" onclick="ln.getMonthInfo(3)">2015年3月</a>
+            <a href="javascript:" onclick="ln.getMonthInfo(2)">2015年2月</a>
+            <a href="javascript:" onclick="ln.getMonthInfo(1)">2015年1月</a>
+        </div>
+    </button>
+    <button type="button" class="title_btn" id="quarterCheck">
+        <span>季度查询</span>
+        <div class="lv_qu_op">
+            <a href="javascript:" onclick="ln.getQuarterInfo(1)">2015年1季度</a>
+        </div>
+    </button>
+</div>
+<script>
+$('.lv_btn_w a').click(function() {
+    $('.lv_btn_w .active').removeClass('active');
+    $(this).parents('button').addClass('active');
+    $(this).parent().hide(0, function() {
+        var _this = $(this);
+        setTimeout(function() {
+            _this.removeAttr('style');
+        }, 200);
+    });
+});
+
+$('#lastMonth').click(function() {
+    ln.getLastMonInfo();
+    $('.lv_btn_w .active').removeClass('active');
+    $(this).addClass('active');
+});
+</script>

@@ -1,0 +1,56 @@
+﻿<ul>
+    <li class="li_c">
+        <span class="bar5">帐号</span>
+        <div class="list">
+            <a href="account">
+                <em>帐号设置</em>
+            </a>
+            <!-- <a href="childAccount">
+                <em>子帐号管理</em>
+            </a> -->
+        </div>
+    </li>
+    <li class="li_c">
+        <span class="bar6">店铺</span>
+        <div class="list">
+            <a href="store">
+                <em>店铺管理</em>
+            </a>
+            <a href="filter">
+                <em>过滤名单</em>
+            </a>
+        </div>
+    </li>
+    <li class="li_t">
+        <a href="device" class="bar7">设备管理</a>
+    </li>
+</ul>
+<script>
+$(function() {
+    var keywords = window.location.href.match("\/[a-zA-Z]+$").toString().substr(1);
+
+    if (keywords == "device") {
+        $('.li_t').addClass('active');
+
+    } else {
+        $('.li_c a').each(function() {
+            var href = $(this).attr('href');
+
+            if (href == keywords) {
+                $(this).addClass('active');
+                $(this).parents('.li_c').addClass('active');
+            }
+        });
+    }
+
+    $('.li_c').on('touchstart', function() {
+        var list = $(this).children('.list');
+
+        if (list.css('display') == 'block') {
+            list.hide();
+        } else {
+            list.show();
+        }
+    });
+});
+</script>

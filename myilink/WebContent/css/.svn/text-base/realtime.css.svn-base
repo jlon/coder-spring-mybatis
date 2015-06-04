@@ -1,0 +1,5 @@
+﻿#passNumber {
+    text-align: center;
+    font-size: 60px;
+    color: #555555;
+}

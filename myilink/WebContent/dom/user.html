@@ -1,0 +1,28 @@
+﻿<div class="user_l">
+    <span>您好，</span>
+    <div href="javascript:" class="user_name">
+        <span id="userNameSp"></span>
+        <ul class="list">
+            <li>
+                <a href="account">设置</a>
+            </li>
+            <li>
+                <a href="logout">退出</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="p_w">
+    <a href="javascript:" id="msg">
+        <span>反馈</span>
+    </a>
+    <a href="javascript:" id="help">
+        <span>帮助</span>
+    </a>
+</div>
+<script>
+    $.get(GLOBAL_URL + '/loginUser', function(data) {
+        $('#userNameSp').text(data.username);
+    });
+</script>
